@@ -1,6 +1,9 @@
 package dslengine
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+)
 
 type (
 
@@ -90,10 +93,10 @@ type (
 		Pattern string
 		// Minimum represents an minimum value validation as described at
 		// http://json-schema.org/latest/json-schema-validation.html#anchor21.
-		Minimum *float64
+		Minimum interface{}
 		// Maximum represents a maximum value validation as described at
 		// http://json-schema.org/latest/json-schema-validation.html#anchor17.
-		Maximum *float64
+		Maximum interface{}
 		// MinLength represents an minimum length validation as described at
 		// http://json-schema.org/latest/json-schema-validation.html#anchor29.
 		MinLength *int
@@ -135,10 +138,40 @@ func (v *ValidationDefinition) Merge(other *ValidationDefinition) {
 	if v.Pattern == "" {
 		v.Pattern = other.Pattern
 	}
-	if v.Minimum == nil || (other.Minimum != nil && *v.Minimum > *other.Minimum) {
+	if v.Minimum == nil || (other.Minimum != nil && func() bool {
+		x := reflect.ValueOf(v.Minimum)
+		y := reflect.ValueOf(other.Minimum)
+		if x.Kind() != y.Kind() {
+			panic(fmt.Sprintf("non comparable types, %v(%[1]T) <> %v(%[2]T)", x, y))
+		}
+		switch x.Kind() {
+		case reflect.Int:
+			return x.Int() > y.Int()
+		case reflect.Float64:
+			return x.Float() > y.Float()
+		default:
+			panic(fmt.Sprintf("unknown type, %v(%[1]T)", x))
+		}
+		return false
+	}()) {
 		v.Minimum = other.Minimum
 	}
-	if v.Maximum == nil || (other.Maximum != nil && *v.Maximum < *other.Maximum) {
+	if v.Maximum == nil || (other.Maximum != nil && func() bool {
+		x := reflect.ValueOf(v.Maximum)
+		y := reflect.ValueOf(other.Maximum)
+		if x.Kind() != y.Kind() {
+			panic(fmt.Sprintf("non comparable types, %v(%[1]T) <> %v(%[2]T)", x, y))
+		}
+		switch x.Kind() {
+		case reflect.Int:
+			return x.Int() < y.Int()
+		case reflect.Float64:
+			return x.Float() < y.Float()
+		default:
+			panic(fmt.Sprintf("unknown type, %v(%[1]T)", x))
+		}
+		return false
+	}()) {
 		v.Maximum = other.Maximum
 	}
 	if v.MinLength == nil || (other.MinLength != nil && *v.MinLength > *other.MinLength) {

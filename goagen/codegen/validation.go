@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"math"
 	"strings"
 	"text/template"
 
@@ -375,9 +374,9 @@ func validationsCode(att *design.AttributeDefinition, data map[string]interface{
 	}
 	if min := validation.Minimum; min != nil {
 		if att.Type == design.Integer {
-			data["min"] = renderInteger(*min)
+			data["min"] = fmt.Sprintf("%d", min)
 		} else {
-			data["min"] = fmt.Sprintf("%f", *min)
+			data["min"] = fmt.Sprintf("%f", min)
 		}
 		data["isMin"] = true
 		delete(data, "max")
@@ -387,9 +386,9 @@ func validationsCode(att *design.AttributeDefinition, data map[string]interface{
 	}
 	if max := validation.Maximum; max != nil {
 		if att.Type == design.Integer {
-			data["max"] = renderInteger(*max)
+			data["max"] = fmt.Sprintf("%d", max)
 		} else {
-			data["max"] = fmt.Sprintf("%f", *max)
+			data["max"] = fmt.Sprintf("%f", max)
 		}
 		data["isMin"] = false
 		delete(data, "min")
@@ -425,18 +424,6 @@ func validationsCode(att *design.AttributeDefinition, data map[string]interface{
 		res = append(res, val)
 	}
 	return
-}
-
-// renderInteger renders a max or min value properly, taking into account
-// overflows due to casting from a float value.
-func renderInteger(f float64) string {
-	if f > math.Nextafter(float64(math.MaxInt64), 0) {
-		return fmt.Sprintf("%d", int64(math.MaxInt64))
-	}
-	if f < math.Nextafter(float64(math.MinInt64), 0) {
-		return fmt.Sprintf("%d", int64(math.MinInt64))
-	}
-	return fmt.Sprintf("%d", int64(f))
 }
 
 // oneof produces code that compares target with each element of vals and ORs

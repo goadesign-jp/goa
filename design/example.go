@@ -3,6 +3,7 @@ package design
 import (
 	"fmt"
 	"math"
+	"reflect"
 	"regexp"
 	"time"
 
@@ -217,25 +218,37 @@ func (eg *exampleGenerator) checkMinMaxValueValidation(example interface{}) bool
 	if !eg.hasMinMaxValidation() {
 		return true
 	}
-	valid := true
-	if min := eg.a.Validation.Minimum; min != nil {
-		if v, ok := example.(int); ok && float64(v) < *min {
-			valid = false
-		} else if v, ok := example.(float64); ok && v < *min {
-			valid = false
+	if eg.a.Validation.Minimum != nil {
+		min := reflect.ValueOf(eg.a.Validation.Minimum)
+		v := reflect.ValueOf(example)
+		if min.Kind() != v.Kind() {
+			return false // panic ???
 		}
-	}
-	if !valid {
-		return false
+		switch min.Kind() {
+		case reflect.Int:
+			return min.Int() <= v.Int()
+		case reflect.Float64:
+			return min.Float() <= v.Float()
+		default:
+			return false // panic ???
+		}
 	}
 	if max := eg.a.Validation.Maximum; max != nil {
-		if v, ok := example.(int); ok && float64(v) > *max {
-			return false
-		} else if v, ok := example.(float64); ok && v > *max {
-			return false
+		max := reflect.ValueOf(eg.a.Validation.Minimum)
+		v := reflect.ValueOf(example)
+		if max.Kind() != v.Kind() {
+			return false // panic ???
+		}
+		switch max.Kind() {
+		case reflect.Int:
+			return max.Int() >= v.Int()
+		case reflect.Float64:
+			return max.Float() >= v.Float()
+		default:
+			return false // panic ???
 		}
 	}
-	return true
+	return false
 }
 
 func (eg *exampleGenerator) generateValidatedMinMaxValueExample() interface{} {
@@ -244,10 +257,10 @@ func (eg *exampleGenerator) generateValidatedMinMaxValueExample() interface{} {
 	}
 	min, max := math.Inf(1), math.Inf(-1)
 	if eg.a.Validation.Minimum != nil {
-		min = *eg.a.Validation.Minimum
+		min = reflect.ValueOf(eg.a.Validation.Minimum).Convert(reflect.TypeOf(float64(0.0))).Float()
 	}
 	if eg.a.Validation.Maximum != nil {
-		max = *eg.a.Validation.Maximum
+		max = reflect.ValueOf(eg.a.Validation.Maximum).Convert(reflect.TypeOf(float64(0.0))).Float()
 	}
 	if math.IsInf(min, 1) {
 		if eg.a.Type.Kind() == IntegerKind {

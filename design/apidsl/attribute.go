@@ -467,26 +467,59 @@ func Minimum(val interface{}) {
 	if a, ok := attributeDefinition(); ok {
 		if a.Type != nil && a.Type.Kind() != design.IntegerKind && a.Type.Kind() != design.NumberKind {
 			incompatibleAttributeType("minimum", a.Type.Name(), "an integer or a number")
-		} else {
-			var f float64
-			switch v := val.(type) {
-			case float32, float64, int, int8, int16, int32, int64, uint8, uint16, uint32, uint64:
-				f = reflect.ValueOf(v).Convert(reflect.TypeOf(float64(0.0))).Float()
-			case string:
-				var err error
-				f, err = strconv.ParseFloat(v, 64)
+			return
+		}
+		if a.Validation == nil {
+			a.Validation = &dslengine.ValidationDefinition{}
+		}
+		switch v := val.(type) {
+		case int, int8, int16, int32, int64, uint8, uint16, uint32, uint64:
+			if a.Type.Kind() == design.IntegerKind {
+				min := reflect.ValueOf(v).Convert(reflect.TypeOf(int64(0))).Int()
+				if a.Validation.Minimum == nil || reflect.ValueOf(a.Validation.Minimum).Int() > min {
+					a.Validation.Minimum = int(min)
+				}
+			} else if a.Type.Kind() == design.NumberKind {
+				min := reflect.ValueOf(v).Convert(reflect.TypeOf(float64(0.0))).Float()
+				if a.Validation.Minimum == nil || reflect.ValueOf(a.Validation.Minimum).Float() > min {
+					a.Validation.Minimum = min
+				}
+			} else {
+				dslengine.ReportError("invalid number value %#v", v)
+				return
+			}
+		case float32, float64:
+			if a.Type.Kind() != design.NumberKind {
+				dslengine.ReportError("incompatible with attribute of type, %#v", v)
+				return
+			}
+			a.Validation.Minimum = reflect.ValueOf(v).Convert(reflect.TypeOf(float64(0.0))).Float()
+		case string:
+			if a.Type.Kind() == design.IntegerKind {
+				min, err := strconv.ParseInt(v, 10, 64)
 				if err != nil {
 					dslengine.ReportError("invalid number value %#v", v)
 					return
 				}
-			default:
+				if a.Validation.Minimum == nil || reflect.ValueOf(a.Validation.Minimum).Int() > min {
+					a.Validation.Minimum = int(min)
+				}
+			} else if a.Type.Kind() == design.NumberKind {
+				min, err := strconv.ParseFloat(v, 64)
+				if err != nil {
+					dslengine.ReportError("invalid number value %#v", v)
+					return
+				}
+				if a.Validation.Minimum == nil || reflect.ValueOf(a.Validation.Minimum).Float() > min {
+					a.Validation.Minimum = min
+				}
+			} else {
 				dslengine.ReportError("invalid number value %#v", v)
 				return
 			}
-			if a.Validation == nil {
-				a.Validation = &dslengine.ValidationDefinition{}
-			}
-			a.Validation.Minimum = &f
+		default:
+			dslengine.ReportError("invalid number value %#v", v)
+			return
 		}
 	}
 }
@@ -499,26 +532,59 @@ func Maximum(val interface{}) {
 	if a, ok := attributeDefinition(); ok {
 		if a.Type != nil && a.Type.Kind() != design.IntegerKind && a.Type.Kind() != design.NumberKind {
 			incompatibleAttributeType("maximum", a.Type.Name(), "an integer or a number")
-		} else {
-			var f float64
-			switch v := val.(type) {
-			case float32, float64, int, int8, int16, int32, int64, uint8, uint16, uint32, uint64:
-				f = reflect.ValueOf(v).Convert(reflect.TypeOf(float64(0.0))).Float()
-			case string:
-				var err error
-				f, err = strconv.ParseFloat(v, 64)
+			return
+		}
+		if a.Validation == nil {
+			a.Validation = &dslengine.ValidationDefinition{}
+		}
+		switch v := val.(type) {
+		case int, int8, int16, int32, int64, uint8, uint16, uint32, uint64:
+			if a.Type.Kind() == design.IntegerKind {
+				max := reflect.ValueOf(v).Convert(reflect.TypeOf(int64(0))).Int()
+				if a.Validation.Maximum == nil || reflect.ValueOf(a.Validation.Maximum).Int() < max {
+					a.Validation.Maximum = int(max)
+				}
+			} else if a.Type.Kind() == design.NumberKind {
+				max := reflect.ValueOf(v).Convert(reflect.TypeOf(float64(0.0))).Float()
+				if a.Validation.Maximum == nil || reflect.ValueOf(a.Validation.Maximum).Float() < max {
+					a.Validation.Maximum = max
+				}
+			} else {
+				dslengine.ReportError("invalid number value %#v", v)
+				return
+			}
+		case float32, float64:
+			if a.Type.Kind() != design.NumberKind {
+				dslengine.ReportError("incompatible with attribute of type, %#v", v)
+				return
+			}
+			a.Validation.Maximum = reflect.ValueOf(v).Convert(reflect.TypeOf(float64(0.0))).Float()
+		case string:
+			if a.Type.Kind() == design.IntegerKind {
+				max, err := strconv.ParseInt(v, 10, 64)
 				if err != nil {
 					dslengine.ReportError("invalid number value %#v", v)
 					return
 				}
-			default:
+				if a.Validation.Maximum == nil || reflect.ValueOf(a.Validation.Maximum).Int() < max {
+					a.Validation.Maximum = int(max)
+				}
+			} else if a.Type.Kind() == design.NumberKind {
+				max, err := strconv.ParseFloat(v, 64)
+				if err != nil {
+					dslengine.ReportError("invalid number value %#v", v)
+					return
+				}
+				if a.Validation.Maximum == nil || reflect.ValueOf(a.Validation.Maximum).Float() < max {
+					a.Validation.Maximum = max
+				}
+			} else {
 				dslengine.ReportError("invalid number value %#v", v)
 				return
 			}
-			if a.Validation == nil {
-				a.Validation = &dslengine.ValidationDefinition{}
-			}
-			a.Validation.Maximum = &f
+		default:
+			dslengine.ReportError("invalid number value %#v", v)
+			return
 		}
 	}
 }

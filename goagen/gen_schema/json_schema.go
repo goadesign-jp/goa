@@ -341,12 +341,42 @@ func (s *JSONSchema) createMergeItems(other *JSONSchema) mergeItems {
 		{
 			a: s.Minimum, b: other.Minimum,
 			needed: (s.Minimum == nil && s.Minimum != nil) ||
-				(s.Minimum != nil && other.Minimum != nil && *s.Minimum > *other.Minimum),
+				(s.Minimum != nil && other.Minimum != nil && func() bool {
+					x := reflect.ValueOf(s.Minimum)
+					y := reflect.ValueOf(other.Minimum)
+					if x.Kind() != y.Kind() {
+						panic(fmt.Sprintf("non comparable types, %v(%[1]T) <> %v(%[2]T)", x, y))
+					}
+					switch x.Kind() {
+					case reflect.Int:
+						return x.Int() > y.Int()
+					case reflect.Float64:
+						return x.Float() > y.Float()
+					default:
+						panic(fmt.Sprintf("unknown type, %v(%[1]T)", x))
+					}
+					return false
+				}()),
 		},
 		{
 			a: s.Maximum, b: other.Maximum,
 			needed: (s.Maximum == nil && other.Maximum != nil) ||
-				(s.Maximum != nil && other.Maximum != nil && *s.Maximum < *other.Maximum),
+				(s.Maximum != nil && other.Maximum != nil && func() bool {
+					x := reflect.ValueOf(s.Maximum)
+					y := reflect.ValueOf(other.Maximum)
+					if x.Kind() != y.Kind() {
+						panic(fmt.Sprintf("non comparable types, %v(%[1]T) <> %v(%[2]T)", x, y))
+					}
+					switch x.Kind() {
+					case reflect.Int:
+						return x.Int() < y.Int()
+					case reflect.Float64:
+						return x.Float() < y.Float()
+					default:
+						panic(fmt.Sprintf("unknown type, %v(%[1]T)", x))
+					}
+					return false
+				}()),
 		},
 		{
 			a: s.MinLength, b: other.MinLength,

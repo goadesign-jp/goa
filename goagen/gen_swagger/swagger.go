@@ -1101,7 +1101,7 @@ func initPatternValidation(def interface{}, pattern string) {
 	}
 }
 
-func initMinimumValidation(def interface{}, min *float64) {
+func initMinimumValidation(def interface{}, min interface{}) {
 	switch actual := def.(type) {
 	case *Parameter:
 		actual.Minimum = min
@@ -1115,7 +1115,7 @@ func initMinimumValidation(def interface{}, min *float64) {
 	}
 }
 
-func initMaximumValidation(def interface{}, max *float64) {
+func initMaximumValidation(def interface{}, max interface{}) {
 	switch actual := def.(type) {
 	case *Parameter:
 		actual.Maximum = max
