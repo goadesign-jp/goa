@@ -98,12 +98,7 @@ func (g *Generator) Generate() (_ []string, err error) {
 	g.genfiles = append(g.genfiles, swaggerFile)
 
 	// YAML
-	var yamlSource interface{}
-	if err = json.Unmarshal(rawJSON, &yamlSource); err != nil {
-		return nil, err
-	}
-
-	rawYAML, err := yaml.Marshal(yamlSource)
+	rawYAML, err := yaml.Marshal(s)
 	if err != nil {
 		return nil, err
 	}
