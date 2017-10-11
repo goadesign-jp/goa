@@ -15,38 +15,38 @@ type (
 	// JSONSchema represents an instance of a JSON schema.
 	// See http://json-schema.org/documentation.html
 	JSONSchema struct {
-		Schema string `json:"$schema,omitempty"`
+		Schema string `json:"$schema,omitempty" yaml:"$schema,omitempty"`
 		// Core schema
-		ID           string                 `json:"id,omitempty"`
-		Title        string                 `json:"title,omitempty"`
-		Type         JSONType               `json:"type,omitempty"`
-		Items        *JSONSchema            `json:"items,omitempty"`
-		Properties   map[string]*JSONSchema `json:"properties,omitempty"`
-		Definitions  map[string]*JSONSchema `json:"definitions,omitempty"`
-		Description  string                 `json:"description,omitempty"`
-		DefaultValue interface{}            `json:"default,omitempty"`
-		Example      interface{}            `json:"example,omitempty"`
+		ID           string                 `json:"id,omitempty" yaml:"id,omitempty"`
+		Title        string                 `json:"title,omitempty" yaml:"title,omitempty"`
+		Type         JSONType               `json:"type,omitempty" yaml:"type,omitempty"`
+		Items        *JSONSchema            `json:"items,omitempty" yaml:"items,omitempty"`
+		Properties   map[string]*JSONSchema `json:"properties,omitempty" yaml:"properties,omitempty"`
+		Definitions  map[string]*JSONSchema `json:"definitions,omitempty" yaml:"definitions,omitempty"`
+		Description  string                 `json:"description,omitempty" yaml:"description,omitempty"`
+		DefaultValue interface{}            `json:"default,omitempty" yaml:"default,omitempty"`
+		Example      interface{}            `json:"example,omitempty" yaml:"example,omitempty"`
 
 		// Hyper schema
-		Media     *JSONMedia  `json:"media,omitempty"`
-		ReadOnly  bool        `json:"readOnly,omitempty"`
-		PathStart string      `json:"pathStart,omitempty"`
-		Links     []*JSONLink `json:"links,omitempty"`
-		Ref       string      `json:"$ref,omitempty"`
+		Media     *JSONMedia  `json:"media,omitempty" yaml:"media,omitempty"`
+		ReadOnly  bool        `json:"readOnly,omitempty" yaml:"readOnly,omitempty"`
+		PathStart string      `json:"pathStart,omitempty" yaml:"pathStart,omitempty"`
+		Links     []*JSONLink `json:"links,omitempty" yaml:"links,omitempty"`
+		Ref       string      `json:"$ref,omitempty" yaml:"$ref,omitempty"`
 
 		// Validation
-		Enum                 []interface{} `json:"enum,omitempty"`
-		Format               string        `json:"format,omitempty"`
-		Pattern              string        `json:"pattern,omitempty"`
-		Minimum              *float64      `json:"minimum,omitempty"`
-		Maximum              *float64      `json:"maximum,omitempty"`
-		MinLength            *int          `json:"minLength,omitempty"`
-		MaxLength            *int          `json:"maxLength,omitempty"`
-		Required             []string      `json:"required,omitempty"`
-		AdditionalProperties bool          `json:"additionalProperties,omitempty"`
+		Enum                 []interface{} `json:"enum,omitempty" yaml:"enum,omitempty"`
+		Format               string        `json:"format,omitempty" yaml:"format,omitempty"`
+		Pattern              string        `json:"pattern,omitempty" yaml:"pattern,omitempty"`
+		Minimum              interface{}   `json:"minimum,omitempty" yaml:"minimum,omitempty"`
+		Maximum              interface{}   `json:"maximum,omitempty" yaml:"maximum,omitempty"`
+		MinLength            *int          `json:"minLength,omitempty" yaml:"minLength,omitempty"`
+		MaxLength            *int          `json:"maxLength,omitempty" yaml:"maxLength,omitempty"`
+		Required             []string      `json:"required,omitempty" yaml:"required,omitempty"`
+		AdditionalProperties bool          `json:"additionalProperties,omitempty" yaml:"additionalProperties,omitempty"`
 
 		// Union
-		AnyOf []*JSONSchema `json:"anyOf,omitempty"`
+		AnyOf []*JSONSchema `json:"anyOf,omitempty" yaml:"anyOf,omitempty"`
 	}
 
 	// JSONType is the JSON type enum.
@@ -54,21 +54,21 @@ type (
 
 	// JSONMedia represents a "media" field in a JSON hyper schema.
 	JSONMedia struct {
-		BinaryEncoding string `json:"binaryEncoding,omitempty"`
-		Type           string `json:"type,omitempty"`
+		BinaryEncoding string `json:"binaryEncoding,omitempty" yaml:"binaryEncoding,omitempty"`
+		Type           string `json:"type,omitempty" yaml:"type,omitempty"`
 	}
 
 	// JSONLink represents a "link" field in a JSON hyper schema.
 	JSONLink struct {
-		Title        string      `json:"title,omitempty"`
-		Description  string      `json:"description,omitempty"`
-		Rel          string      `json:"rel,omitempty"`
-		Href         string      `json:"href,omitempty"`
-		Method       string      `json:"method,omitempty"`
-		Schema       *JSONSchema `json:"schema,omitempty"`
-		TargetSchema *JSONSchema `json:"targetSchema,omitempty"`
-		MediaType    string      `json:"mediaType,omitempty"`
-		EncType      string      `json:"encType,omitempty"`
+		Title        string      `json:"title,omitempty" yaml:"title,omitempty"`
+		Description  string      `json:"description,omitempty" yaml:"description,omitempty"`
+		Rel          string      `json:"rel,omitempty" yaml:"rel,omitempty"`
+		Href         string      `json:"href,omitempty" yaml:"href,omitempty"`
+		Method       string      `json:"method,omitempty" yaml:"method,omitempty"`
+		Schema       *JSONSchema `json:"schema,omitempty" yaml:"schema,omitempty"`
+		TargetSchema *JSONSchema `json:"targetSchema,omitempty" yaml:"targetSchema,omitempty"`
+		MediaType    string      `json:"mediaType,omitempty" yaml:"mediaType,omitempty"`
+		EncType      string      `json:"encType,omitempty" yaml:"encType,omitempty"`
 	}
 )
 
