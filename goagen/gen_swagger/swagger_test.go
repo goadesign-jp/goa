@@ -146,7 +146,7 @@ var _ = Describe("New", func() {
 				boolParam   = "boolParam"
 				queryParam  = "queryParam"
 				description = "description"
-				intMin      = 1.0
+				intMin      = 1
 				floatMax    = 2.4
 				enum1       = "enum1"
 				enum2       = "enum2"
@@ -192,13 +192,13 @@ var _ = Describe("New", func() {
 				Ω(swagger.Parameters[intParam].In).Should(Equal("path"))
 				Ω(swagger.Parameters[intParam].Required).Should(BeTrue())
 				Ω(swagger.Parameters[intParam].Type).Should(Equal("integer"))
-				Ω(*swagger.Parameters[intParam].Minimum).Should(Equal(intMin))
+				Ω(swagger.Parameters[intParam].Minimum).Should(Equal(intMin))
 				Ω(swagger.Parameters[numParam]).ShouldNot(BeNil())
 				Ω(swagger.Parameters[numParam].Name).Should(Equal(numParam))
 				Ω(swagger.Parameters[numParam].In).Should(Equal("path"))
 				Ω(swagger.Parameters[numParam].Required).Should(BeTrue())
 				Ω(swagger.Parameters[numParam].Type).Should(Equal("number"))
-				Ω(*swagger.Parameters[numParam].Maximum).Should(Equal(floatMax))
+				Ω(swagger.Parameters[numParam].Maximum).Should(Equal(floatMax))
 				Ω(swagger.Parameters[boolParam]).ShouldNot(BeNil())
 				Ω(swagger.Parameters[boolParam].Name).Should(Equal(boolParam))
 				Ω(swagger.Parameters[boolParam].In).Should(Equal("path"))
@@ -286,7 +286,7 @@ var _ = Describe("New", func() {
 				intParam = "intParam"
 				numParam = "numParam"
 				strParam = "strParam"
-				intMin   = 0.0
+				intMin   = 0
 				floatMax = 0.0
 			)
 
@@ -412,8 +412,8 @@ var _ = Describe("New", func() {
 			var (
 				minLength1  = 1
 				maxLength10 = 10
-				minimum_2   = -2.0
-				maximum2    = 2.0
+				minimum_2   = -2
+				maximum2    = 2
 				minItems1   = 1
 				maxItems5   = 5
 			)
@@ -560,7 +560,7 @@ var _ = Describe("New", func() {
 					Items: &genswagger.Items{Type: "string"}, MinItems: &minItems1, MaxItems: &maxItems5}))
 				Ω(ps[5]).Should(Equal(&genswagger.Parameter{In: "header", Name: "OptionalBoolWithDefault", Type: "boolean",
 					Description: "defaults true", Default: true}))
-				Ω(ps[6]).Should(Equal(&genswagger.Parameter{In: "header", Name: "OptionalInt", Type: "integer", Minimum: &minimum_2, Maximum: &maximum2}))
+				Ω(ps[6]).Should(Equal(&genswagger.Parameter{In: "header", Name: "OptionalInt", Type: "integer", Minimum: minimum_2, Maximum: maximum2}))
 				Ω(ps[7]).Should(Equal(&genswagger.Parameter{In: "header", Name: "OptionalRegex", Type: "string",
 					Pattern: `[a-z]\d+`, MinLength: &minLength1, MaxLength: &maxLength10}))
 				Ω(ps[8]).Should(Equal(&genswagger.Parameter{In: "header", Name: "OptionalResourceHeaderWithEnum", Type: "string",

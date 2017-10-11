@@ -169,7 +169,7 @@ var _ = Describe("Validation", func() {
 			It("records the validation", func() {
 				Ω(dslengine.Errors).ShouldNot(HaveOccurred())
 				Ω(att.Validation).ShouldNot(BeNil())
-				Ω(*att.Validation.Minimum).Should(Equal(2.0))
+				Ω(att.Validation.Minimum).Should(Equal(2))
 			})
 		})
 
@@ -199,7 +199,7 @@ var _ = Describe("Validation", func() {
 			It("records the validation", func() {
 				Ω(dslengine.Errors).ShouldNot(HaveOccurred())
 				Ω(att.Validation).ShouldNot(BeNil())
-				Ω(*att.Validation.Maximum).Should(Equal(2.0))
+				Ω(att.Validation.Maximum).Should(Equal(2))
 			})
 		})
 

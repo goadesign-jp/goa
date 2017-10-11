@@ -62,9 +62,9 @@ var _ = Describe("validation code generation", func() {
 			Context("of min value 0", func() {
 				BeforeEach(func() {
 					attType = design.Integer
-					min := 0.0
+					min := 0
 					validation = &dslengine.ValidationDefinition{
-						Minimum: &min,
+						Minimum: min,
 					}
 				})
 
@@ -76,9 +76,9 @@ var _ = Describe("validation code generation", func() {
 			Context("of max value math.MaxInt64", func() {
 				BeforeEach(func() {
 					attType = design.Integer
-					max := float64(math.MaxInt64)
+					max := math.MaxInt64
 					validation = &dslengine.ValidationDefinition{
-						Maximum: &max,
+						Maximum: max,
 					}
 				})
 
@@ -90,9 +90,9 @@ var _ = Describe("validation code generation", func() {
 			Context("of min value math.MinInt64", func() {
 				BeforeEach(func() {
 					attType = design.Integer
-					min := float64(math.MinInt64)
+					min := math.MinInt64
 					validation = &dslengine.ValidationDefinition{
-						Minimum: &min,
+						Minimum: min,
 					}
 				})
 
