@@ -30,7 +30,7 @@ type SecurityDefinition struct {
 	Scheme *SecuritySchemeDefinition
 
 	// Scopes are scopes required for this action
-	Scopes []string `json:"scopes,omitempty"`
+	Scopes []string `json:"scopes,omitempty" yaml:"scopes,omitempty"`
 }
 
 // Context returns the generic definition name used in error messages.
@@ -48,27 +48,27 @@ type SecuritySchemeDefinition struct {
 
 	// Scheme is the name of the security scheme, referenced in
 	// Security() declarations. Ex: "googAuth", "my_big_token", "jwt".
-	SchemeName string `json:"scheme"`
+	SchemeName string `json:"scheme" yaml:"scheme"`
 
 	// Type is one of "apiKey", "oauth2" or "basic", according to the
 	// Swagger specs. We also support "jwt".
-	Type string `json:"type"`
+	Type string `json:"type" yaml:"type"`
 	// Description describes the security scheme. Ex: "Google OAuth2"
-	Description string `json:"description"`
+	Description string `json:"description" yaml:"description"`
 	// In determines whether it is in the "header" or in the "query"
 	// string that we will find an `apiKey`.
-	In string `json:"in,omitempty"`
+	In string `json:"in,omitempty" yaml:"in,omitempty"`
 	// Name refers to a header or parameter name, based on In's value.
-	Name string `json:"name,omitempty"`
+	Name string `json:"name,omitempty" yaml:"name,omitempty"`
 	// Scopes is a list of available scopes for this scheme, along
 	// with their textual description.
-	Scopes map[string]string `json:"scopes,omitempty"`
+	Scopes map[string]string `json:"scopes,omitempty" yaml:"scopes,omitempty"`
 	// Flow determines the oauth2 flow to use for this scheme.
-	Flow string `json:"flow,omitempty"`
+	Flow string `json:"flow,omitempty" yaml:"flow,omitempty"`
 	// TokenURL holds the URL for refreshing tokens with oauth2 or JWT
-	TokenURL string `json:"token_url,omitempty"`
+	TokenURL string `json:"token_url,omitempty" yaml:"token_url,omitempty"`
 	// AuthorizationURL holds URL for retrieving authorization codes with oauth2
-	AuthorizationURL string `json:"authorization_url,omitempty"`
+	AuthorizationURL string `json:"authorization_url,omitempty" yaml:"authorization_url,omitempty"`
 	// Metadata is a list of key/value pairs
 	Metadata dslengine.MetadataDefinition
 }

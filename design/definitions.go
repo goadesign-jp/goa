@@ -82,27 +82,27 @@ type (
 	// ContactDefinition contains the API contact information.
 	ContactDefinition struct {
 		// Name of the contact person/organization
-		Name string `json:"name,omitempty"`
+		Name string `json:"name,omitempty" yaml:"name,omitempty"`
 		// Email address of the contact person/organization
-		Email string `json:"email,omitempty"`
+		Email string `json:"email,omitempty" yaml:"email,omitempty"`
 		// URL pointing to the contact information
-		URL string `json:"url,omitempty"`
+		URL string `json:"url,omitempty" yaml:"url,omitempty"`
 	}
 
 	// LicenseDefinition contains the license information for the API.
 	LicenseDefinition struct {
 		// Name of license used for the API
-		Name string `json:"name,omitempty"`
+		Name string `json:"name,omitempty" yaml:"name,omitempty"`
 		// URL to the license used for the API
-		URL string `json:"url,omitempty"`
+		URL string `json:"url,omitempty" yaml:"url,omitempty"`
 	}
 
 	// DocsDefinition points to external documentation.
 	DocsDefinition struct {
 		// Description of documentation.
-		Description string `json:"description,omitempty"`
+		Description string `json:"description,omitempty" yaml:"description,omitempty"`
 		// URL to documentation.
-		URL string `json:"url,omitempty"`
+		URL string `json:"url,omitempty" yaml:"url,omitempty"`
 	}
 
 	// ResourceDefinition describes a REST resource.
